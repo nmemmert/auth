@@ -44,6 +44,29 @@ docker compose up --build
    - Node UI: http://localhost:3100
    - Python UI: http://localhost:3200
 
+## Build and push container images
+
+### Local build and push
+
+Run these commands on a machine with Docker installed:
+
+```powershell
+docker login ghcr.io
+docker build -t ghcr.io/<owner>/auth-node-backend:latest ./node-stack/backend
+docker build -t ghcr.io/<owner>/auth-node-frontend:latest ./node-stack/frontend
+docker build -t ghcr.io/<owner>/auth-python-backend:latest ./python-stack/backend
+docker build -t ghcr.io/<owner>/auth-python-frontend:latest ./python-stack/frontend
+docker push ghcr.io/<owner>/auth-node-backend:latest
+docker push ghcr.io/<owner>/auth-node-frontend:latest
+docker push ghcr.io/<owner>/auth-python-backend:latest
+docker push ghcr.io/<owner>/auth-python-frontend:latest
+```
+
+### GitHub Actions build and push
+
+This repository includes a workflow at `.github/workflows/docker-publish.yml`.
+It builds and pushes all 4 images to GHCR on pushes to main or when manually triggered.
+
 ## Quick start (without Docker)
 
 ### Node stack
