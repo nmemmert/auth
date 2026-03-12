@@ -22,13 +22,21 @@ app.get("/health", (_req, res) => {
 app.use("/api", requireAdminToken);
 
 app.get("/api/users", async (_req, res) => {
-  const users = await listUsers();
-  res.json({ users });
+  try {
+    const users = await listUsers();
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.get("/api/groups", async (_req, res) => {
-  const groups = await listGroups();
-  res.json({ groups });
+  try {
+    const groups = await listGroups();
+    res.json({ groups });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 app.post("/api/users", async (req, res) => {

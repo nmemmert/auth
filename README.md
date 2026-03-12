@@ -77,6 +77,12 @@ Important notes:
 - Run one admin backend at a time in production to reduce edit collisions on the same YAML file.
 - Keep backups of your users file before major user/group updates.
 
+Troubleshooting file load errors:
+
+- Ensure `AUTHELIA_USERS_FILE_HOST` is a file path, not a directory path.
+- Ensure the file exists on host before running compose (example: `touch /opt/authelia/users_database.yml`).
+- If API returns a YAML parse error, validate syntax in your `users_database.yml`.
+
 ## Build and push container images
 
 ### Local build and push

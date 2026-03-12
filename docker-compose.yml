@@ -9,7 +9,11 @@ services:
       AUTHELIA_USERS_FILE: /data/users_database.yml
       ADMIN_API_TOKEN: ${ADMIN_API_TOKEN}
     volumes:
-      - ${AUTHELIA_USERS_FILE_HOST}:/data/users_database.yml
+      - type: bind
+        source: ${AUTHELIA_USERS_FILE_HOST}
+        target: /data/users_database.yml
+        bind:
+          create_host_path: false
     ports:
       - "${NODE_BACKEND_PORT:-4100}:${NODE_BACKEND_PORT:-4100}"
 

@@ -12,8 +12,21 @@ function getUsersFile() {
 async function ensureFileExists(filePath) {
   await fs.mkdir(dirname(filePath), { recursive: true });
   try {
-    await fs.access(filePath);
-  } catch {
+    const stat = await fs.stat(filePath);
+    if (stat.isDirectory()) {
+      throw new Error(
+        `AUTHELIA_USERS_FILE points to a directory (${filePath}). Check your Docker bind mount and set AUTHELIA_USERS_FILE_HOST to a file path.`
+      );
+    }
+  } catch (error) {
+    if (error?.code && error.code !== "ENOENT") {
+      throw error;
+    }
+
+    if (!error?.code && error instanceof Error) {
+      throw error;
+    }
+
     await fs.writeFile(filePath, DEFAULT_FILE_CONTENT, "utf8");
   }
 }
@@ -22,7 +35,12 @@ async function loadDatabase() {
   const filePath = getUsersFile();
   await ensureFileExists(filePath);
   const raw = await fs.readFile(filePath, "utf8");
-  const parsed = YAML.parse(raw) || {};
+  let parsed;
+  try {
+    parsed = YAML.parse(raw) || {};
+  } catch {
+    throw new Error(`Unable to parse YAML in ${filePath}. Validate users_database.yml syntax.`);
+  }
   if (!parsed.users || typeof parsed.users !== "object") {
     parsed.users = {};
   }
