@@ -1,32 +1,40 @@
 version: "3.9"
 services:
   node-backend:
-    build: ./node-stack/backend
+    image: ghcr.io/${GHCR_OWNER}/auth-node-backend:latest
+    pull_policy: always
+    restart: unless-stopped
     env_file:
       - ./node-stack/backend/.env
     volumes:
-      - ./data:/data
+      - ${AUTHELIA_USERS_FILE_HOST}:/data/users_database.yml
     ports:
       - "4100:4100"
 
   node-frontend:
-    build: ./node-stack/frontend
+    image: ghcr.io/${GHCR_OWNER}/auth-node-frontend:latest
+    pull_policy: always
+    restart: unless-stopped
     depends_on:
       - node-backend
     ports:
       - "3100:3100"
 
   python-backend:
-    build: ./python-stack/backend
+    image: ghcr.io/${GHCR_OWNER}/auth-python-backend:latest
+    pull_policy: always
+    restart: unless-stopped
     env_file:
       - ./python-stack/backend/.env
     volumes:
-      - ./data:/data
+      - ${AUTHELIA_USERS_FILE_HOST}:/data/users_database.yml
     ports:
       - "5100:5100"
 
   python-frontend:
-    build: ./python-stack/frontend
+    image: ghcr.io/${GHCR_OWNER}/auth-python-frontend:latest
+    pull_policy: always
+    restart: unless-stopped
     depends_on:
       - python-backend
     ports:

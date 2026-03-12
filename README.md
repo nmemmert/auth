@@ -31,18 +31,56 @@ Both APIs support:
 
 ## Quick start (Docker)
 
-1. Update API token in:
-   - `node-stack/backend/.env`
-   - `python-stack/backend/.env`
-2. Start all services:
+1. Create a `.env` file next to `docker-compose.yml` with:
 
-```powershell
-docker compose up --build
+```env
+GHCR_OWNER=nmemmert
+AUTHELIA_USERS_FILE_HOST=/opt/authelia/users_database.yml
 ```
 
-3. Open UIs:
+2. Update API token in:
+   - `node-stack/backend/.env`
+   - `python-stack/backend/.env`
+3. If your GHCR packages are private, login first:
+
+```powershell
+docker login ghcr.io
+```
+
+4. Start all services:
+
+```powershell
+docker compose pull
+docker compose up -d
+```
+
+5. Open UIs:
    - Node UI: http://localhost:3100
    - Python UI: http://localhost:3200
+
+## Connect this to Authelia
+
+Point `AUTHELIA_USERS_FILE_HOST` to the same host file used by your Authelia container/service.
+
+Example Authelia config snippet:
+
+```yaml
+authentication_backend:
+  file:
+   path: /config/users_database.yml
+```
+
+If Authelia maps that file from host `/opt/authelia/users_database.yml`, set:
+
+```env
+AUTHELIA_USERS_FILE_HOST=/opt/authelia/users_database.yml
+```
+
+Important notes:
+
+- The admin backends write to `/data/users_database.yml` inside the container, which is your mapped Authelia users file on host.
+- Run one admin backend at a time in production to reduce edit collisions on the same YAML file.
+- Keep backups of your users file before major user/group updates.
 
 ## Build and push container images
 
