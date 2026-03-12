@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  node-backend:
+    build: ./node-stack/backend
+    env_file:
+      - ./node-stack/backend/.env
+    volumes:
+      - ./data:/data
+    ports:
+      - "4100:4100"
+
+  node-frontend:
+    build: ./node-stack/frontend
+    depends_on:
+      - node-backend
+    ports:
+      - "3100:3100"
+
+  python-backend:
+    build: ./python-stack/backend
+    env_file:
+      - ./python-stack/backend/.env
+    volumes:
+      - ./data:/data
+    ports:
+      - "5100:5100"
+
+  python-frontend:
+    build: ./python-stack/frontend
+    depends_on:
+      - python-backend
+    ports:
+      - "3200:3200"

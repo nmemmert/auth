@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authelia File Auth Admin (Python Stack)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <h1>Authelia File Auth Admin (Python Stack)</h1>
+
+    <section class="panel">
+      <h2>Connection</h2>
+      <label>API Base URL</label>
+      <input id="apiBase" value="http://localhost:5100" />
+      <label>Admin Token</label>
+      <input id="token" type="password" />
+      <button id="loadBtn">Load Users</button>
+    </section>
+
+    <section class="panel">
+      <h2>Create User</h2>
+      <form id="createForm">
+        <input id="username" placeholder="username" required />
+        <input id="displayname" placeholder="display name" />
+        <input id="email" placeholder="email" />
+        <input id="groups" placeholder="groups (comma separated)" />
+        <input id="password" type="password" placeholder="password" required />
+        <label><input id="disabled" type="checkbox" />disabled</label>
+        <button type="submit">Create User</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Users</h2>
+      <ul id="users"></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Password Reset</h2>
+      <p id="selectedUser">Selected user: none</p>
+      <form id="passwordForm">
+        <input id="newPassword" type="password" placeholder="new password" required />
+        <button type="submit">Reset Password</button>
+      </form>
+    </section>
+
+    <p id="message"></p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
