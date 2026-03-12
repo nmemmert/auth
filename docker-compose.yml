@@ -4,32 +4,38 @@ services:
     image: ghcr.io/${GHCR_OWNER}/auth-node-backend:latest
     pull_policy: always
     restart: unless-stopped
-    env_file:
-      - ./node-stack/backend/.env
+    environment:
+      PORT: ${NODE_BACKEND_PORT:-4100}
+      AUTHELIA_USERS_FILE: /data/users_database.yml
+      ADMIN_API_TOKEN: ${ADMIN_API_TOKEN}
     volumes:
       - ${AUTHELIA_USERS_FILE_HOST}:/data/users_database.yml
     ports:
-      - "4100:4100"
+      - "${NODE_BACKEND_PORT:-4100}:${NODE_BACKEND_PORT:-4100}"
 
   node-frontend:
     image: ghcr.io/${GHCR_OWNER}/auth-node-frontend:latest
     pull_policy: always
     restart: unless-stopped
+    environment:
+      NODE_BACKEND_PORT: ${NODE_BACKEND_PORT:-4100}
     depends_on:
       - node-backend
     ports:
-      - "3100:3100"
+      - "${NODE_FRONTEND_PORT:-3100}:3100"
 
   python-backend:
     image: ghcr.io/${GHCR_OWNER}/auth-python-backend:latest
     pull_policy: always
     restart: unless-stopped
-    env_file:
-      - ./python-stack/backend/.env
+    environment:
+      PORT: ${PYTHON_BACKEND_PORT:-5100}
+      AUTHELIA_USERS_FILE: /data/users_database.yml
+      ADMIN_API_TOKEN: ${ADMIN_API_TOKEN}
     volumes:
       - ${AUTHELIA_USERS_FILE_HOST}:/data/users_database.yml
     ports:
-      - "5100:5100"
+      - "${PYTHON_BACKEND_PORT:-5100}:${PYTHON_BACKEND_PORT:-5100}"
 
   python-frontend:
     image: ghcr.io/${GHCR_OWNER}/auth-python-frontend:latest
@@ -38,4 +44,4 @@ services:
     depends_on:
       - python-backend
     ports:
-      - "3200:3200"
+      - "${PYTHON_FRONTEND_PORT:-3200}:3200"

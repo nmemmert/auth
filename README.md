@@ -25,36 +25,38 @@ Both APIs support:
 ## Security model
 
 - Every API route under `/api` requires header `x-admin-token`.
-- Set `ADMIN_API_TOKEN` in backend `.env` files.
+- Set `ADMIN_API_TOKEN` in the root `.env` used by Docker Compose.
 - Frontends ask for the token at runtime.
 - Use Authelia access-control to gate these UIs to admin users only.
 
 ## Quick start (Docker)
 
-1. Create a `.env` file next to `docker-compose.yml` with:
+1. Create a `.env` file next to `docker-compose.yml` (or copy from `.env.example`) with:
 
 ```env
 GHCR_OWNER=nmemmert
 AUTHELIA_USERS_FILE_HOST=/opt/authelia/users_database.yml
+ADMIN_API_TOKEN=change-me
+NODE_BACKEND_PORT=4100
+NODE_FRONTEND_PORT=3100
+PYTHON_BACKEND_PORT=5100
+PYTHON_FRONTEND_PORT=3200
 ```
 
-2. Update API token in:
-   - `node-stack/backend/.env`
-   - `python-stack/backend/.env`
-3. If your GHCR packages are private, login first:
+2. If your GHCR packages are private, login first:
 
 ```powershell
 docker login ghcr.io
 ```
 
-4. Start all services:
+3. Start all services:
 
 ```powershell
 docker compose pull
 docker compose up -d
 ```
 
-5. Open UIs:
+4. Open UIs:
    - Node UI: http://localhost:3100
    - Python UI: http://localhost:3200
 
