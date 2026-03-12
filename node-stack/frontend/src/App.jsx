@@ -10,7 +10,7 @@ const defaultUser = {
 };
 
 export function App() {
-  const [apiBase, setApiBase] = useState("http://localhost:4100");
+  const [apiBase, setApiBase] = useState("http://172.16.16.106:4100");
   const [token, setToken] = useState("");
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(defaultUser);
