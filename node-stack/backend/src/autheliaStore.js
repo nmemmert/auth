@@ -36,7 +36,18 @@ async function saveDatabase(filePath, data) {
 
   await fs.copyFile(filePath, backupPath).catch(() => {});
   await fs.writeFile(tempPath, payload, "utf8");
-  await fs.rename(tempPath, filePath);
+
+  try {
+    await fs.rename(tempPath, filePath);
+  } catch (error) {
+    // File-level bind mounts can reject replace-by-rename with EBUSY/EPERM/EXDEV.
+    if (!["EBUSY", "EPERM", "EXDEV"].includes(error?.code)) {
+      throw error;
+    }
+
+    await fs.writeFile(filePath, payload, "utf8");
+    await fs.unlink(tempPath).catch(() => {});
+  }
 }
 
 function sanitizeUser(username, user) {
