@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   node-backend:
-    image: ghcr.io/${GHCR_OWNER}/auth-node-backend:latest
+    image: ghcr.io/nmemmert/auth-node-backend:latest
     pull_policy: always
     restart: unless-stopped
     environment:
@@ -14,7 +14,7 @@ services:
       - "${NODE_BACKEND_PORT:-4100}:${NODE_BACKEND_PORT:-4100}"
 
   node-frontend:
-    image: ghcr.io/${GHCR_OWNER}/auth-node-frontend:latest
+    image: ghcr.io/nmemmert/auth-node-frontend:latest
     pull_policy: always
     restart: unless-stopped
     environment:
@@ -25,7 +25,7 @@ services:
       - "${NODE_FRONTEND_PORT:-3100}:3100"
 
   python-backend:
-    image: ghcr.io/${GHCR_OWNER}/auth-python-backend:latest
+    image: ghcr.io/nmemmert/auth-python-backend:latest
     pull_policy: always
     restart: unless-stopped
     environment:
@@ -38,7 +38,7 @@ services:
       - "${PYTHON_BACKEND_PORT:-5100}:${PYTHON_BACKEND_PORT:-5100}"
 
   python-frontend:
-    image: ghcr.io/${GHCR_OWNER}/auth-python-frontend:latest
+    image: ghcr.io/nmemmert/auth-python-frontend:latest
     pull_policy: always
     restart: unless-stopped
     depends_on:

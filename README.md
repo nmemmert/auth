@@ -34,7 +34,6 @@ Both APIs support:
 1. Create a `.env` file next to `docker-compose.yml` (or copy from `.env.example`) with:
 
 ```env
-GHCR_OWNER=nmemmert
 AUTHELIA_USERS_FILE_HOST=/opt/authelia/users_database.yml
 ADMIN_API_TOKEN=change-me
 NODE_BACKEND_PORT=4100
