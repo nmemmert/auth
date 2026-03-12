@@ -42,19 +42,3 @@ jobs:
           file: ./node-stack/frontend/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/auth-node-frontend:latest
-
-      - name: Build and push python-backend
-        uses: docker/build-push-action@v6
-        with:
-          context: ./python-stack/backend
-          file: ./python-stack/backend/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/auth-python-backend:latest
-
-      - name: Build and push python-frontend
-        uses: docker/build-push-action@v6
-        with:
-          context: ./python-stack/frontend
-          file: ./python-stack/frontend/Dockerfile
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/auth-python-frontend:latest
